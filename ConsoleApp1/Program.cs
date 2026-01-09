@@ -1,8 +1,8 @@
 ﻿// Psuedokod:
 
 // Player Stats:
+int playerDMG = 0;
 int hp = 0;
-int maxhp = 0;
 int damageMax = 0;
 int damageMin = 0;
 string name = "";
@@ -10,10 +10,11 @@ string name = "";
 // Lancer:
 float moreDMG;
 
-// Enemies:
-int testHP = 1000;
-int EminDMG = 100;
-int EmaxDMG = 500;
+// Enemie1:
+int enemyDMG = 0;
+int enemyHP = 1000;
+int EminDMG = 50;
+int EmaxDMG = 150;
 
 
 Console.WriteLine("""
@@ -37,9 +38,9 @@ Trait: 35% Chance to do 80% More Damage
 
 Titan (3)
 Weapon = Huge Sword (225 - 300 Damage)
-Ability: Ground Slam
+Ability: Ground Slam (75 Damage)
 HP 3000
-Trait: 25% Chance to Miss Your Attack Completely
+Trait: 50% Chance to Miss Your Attack Completely
 
 """);
 
@@ -59,7 +60,6 @@ while (isNumber != true || result > 3 || result < 1)
 if (result == 1)
 {
     name = "Knight";
-    maxhp = 1000;
     hp = 1000;
     damageMax = 175;
     damageMin = 125;
@@ -72,7 +72,6 @@ if (result == 1)
 else if (result == 2)
 {
     name = "Lancer";
-    maxhp = 750;
     hp = 750;
     damageMax = 125;
     damageMin = 90;
@@ -85,7 +84,6 @@ else if (result == 2)
 else if (result == 3)
 {
     name = "Titan";
-    maxhp = 3000;
     hp = 3000;
     damageMax = 300;
     damageMin = 225;
@@ -108,59 +106,89 @@ Console.ResetColor();
 Console.ReadLine();
 
 
-// TESTA SÅ ATT DMG OCH HP OCH ABILITIES FUNKAR!!!
-Random trL = new Random();
-Random trT = new Random();
-moreDMG = 1.8f;
+Random trL = new Random(); //Lancer
+Random trT = new Random(); //Titan
+moreDMG = 1.8f; //Lancer
 
 
 while (true)
 {
     Console.Clear();
-    Console.WriteLine($"Enemy HP = {testHP}");
-    Console.WriteLine("Press ENTER to Damage");
+    Console.WriteLine("Press ENTER to Continue");
     Console.ReadLine();
 
     bool trLbool = trL.NextDouble() < 0.35;
-    bool trTbool = trT.NextDouble() < 0.25;
+    bool trTbool = trT.NextDouble() < 0.5;
     if (name == "Lancer")
     {
+        Console.WriteLine("Choose Your Move:");
+        Console.WriteLine("1 = Attack");
+        Console.WriteLine("2 = Special Ability");
+        string move = Console.ReadLine();
+        while (move != "1" && move != "2")
+        {
+            Console.WriteLine("Type 1 or 2");
+            move = Console.ReadLine();
+        }
+
+        if (move == "1")
+        {
         if (trLbool == true)
         {
-            testHP -= (int) MathF.Round(Random.Shared.Next(damageMin, damageMax) * moreDMG);
+            playerDMG = (int) MathF.Round(Random.Shared.Next(damageMin, damageMax) * moreDMG);
             Console.WriteLine("Ability Active!");
+            enemyDMG -= playerDMG;
         }
         else
         {
-            testHP -= Random.Shared.Next(damageMin, damageMax);
+            playerDMG -= Random.Shared.Next(damageMin, damageMax);
+            enemyDMG -= playerDMG;
+        }
         }
     }
     if (name == "Titan")
     {
-        if (trTbool == true)
+        Console.WriteLine("Choose Your Move:");
+        Console.WriteLine("1 = Attack");
+        Console.WriteLine("2 = Special Ability");
+        string move = Console.ReadLine();
+        while (move != "1" && move != "2")
         {
-            testHP -= 0;
+            Console.WriteLine("Type 1 or 2");
+            move = Console.ReadLine();
+        }
+
+        if (move == "1")
+        {
+            if (trTbool == true)
+        {
+            playerDMG = 0;
             Console.WriteLine("Miss!");
         }
-        else
+            else
         {
-            testHP -= Random.Shared.Next(damageMin, damageMax);
+            playerDMG = Random.Shared.Next(damageMin, damageMax);
+            enemyHP -= playerDMG;
+        }
+        }
+        if (move == "2")
+        {
+            playerDMG = 75;
+            enemyHP -= playerDMG;
         }
     }
 
-    hp -= Random.Shared.Next(EminDMG, EmaxDMG);
+    enemyDMG = Random.Shared.Next(EminDMG, EmaxDMG);
+    hp -= enemyDMG;
 
-    Console.WriteLine($"Enemy HP = {testHP}");
-    testHP = 1000 - testHP;
-    Console.WriteLine($"You did {testHP} Damage");
-    testHP = 1000;
+
     Console.WriteLine($"Your HP = {hp}");
-    // maxhp -= hp;
-    Console.WriteLine($"Enemy did {}");
+    Console.WriteLine($"Enemy HP = {enemyHP}");
+    Console.WriteLine($"You did {playerDMG} Damage");
+    Console.WriteLine($"Enemy did {enemyDMG} Damage");
 
     Console.ReadLine();
 }
 
-// FIXA SÅ ATT TEST KAN GÖRA SKADA PÅ SPELAREN
-// FIXA KNIGHT TRAIT
+// FIXA ENEMY DMG OCH ALLA CLASSES
 
