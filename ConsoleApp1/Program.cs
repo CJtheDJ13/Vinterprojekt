@@ -9,6 +9,7 @@ string name = "";
 
 // Lancer:
 float moreDMG;
+int spearThrowDMG;
 
 // Enemie1:
 int enemyDMG = 0;
@@ -32,7 +33,7 @@ Trait: 20% Chance to Completely Block the Enemy's Attack
 
 Lancer (2)
 Weapon = Spear (90 - 125 Damage)
-Ability:
+Ability: Throw Spear (15% Chance to do 450 Damage)
 HP = 750
 Trait: 35% Chance to do 80% More Damage
 
@@ -107,9 +108,10 @@ Console.ReadLine();
 
 
 Random trL = new Random(); //Lancer
+Random trLSpecial = new Random(); //LancerSpecialAbility
 Random trT = new Random(); //Titan
 moreDMG = 1.8f; //Lancer
-
+spearThrowDMG = 450;
 
 while (true)
 {
@@ -118,7 +120,9 @@ while (true)
     Console.ReadLine();
 
     bool trLbool = trL.NextDouble() < 0.35;
+    bool trLSpeacialbool = trLSpecial.NextDouble() < 0.15;
     bool trTbool = trT.NextDouble() < 0.5;
+
     if (name == "Lancer")
     {
         Console.WriteLine("Choose Your Move:");
@@ -130,20 +134,31 @@ while (true)
             Console.WriteLine("Type 1 or 2");
             move = Console.ReadLine();
         }
-
         if (move == "1")
         {
         if (trLbool == true)
-        {
-            playerDMG = (int) MathF.Round(Random.Shared.Next(damageMin, damageMax) * moreDMG);
-            Console.WriteLine("Ability Active!");
-            enemyDMG -= playerDMG;
+            {
+                playerDMG = (int) MathF.Round(Random.Shared.Next(damageMin, damageMax) * moreDMG);
+                Console.WriteLine("Ability Active!");
+            }
+            else
+            {
+                playerDMG = Random.Shared.Next(damageMin, damageMax);
+            }
         }
-        else
+        if (move == "2")
         {
-            playerDMG -= Random.Shared.Next(damageMin, damageMax);
-            enemyDMG -= playerDMG;
-        }
+        if (trLSpeacialbool == true)
+            {
+                playerDMG = spearThrowDMG;
+                Console.WriteLine("Succesful Throw!");
+            }
+            else
+            {
+                playerDMG = 0;
+                Console.WriteLine("Miss!");
+            }
+            
         }
     }
     if (name == "Titan")
@@ -168,18 +183,19 @@ while (true)
             else
         {
             playerDMG = Random.Shared.Next(damageMin, damageMax);
-            enemyHP -= playerDMG;
         }
         }
         if (move == "2")
         {
             playerDMG = 75;
-            enemyHP -= playerDMG;
         }
     }
 
     enemyDMG = Random.Shared.Next(EminDMG, EmaxDMG);
+    enemyHP -= playerDMG;
+
     hp -= enemyDMG;
+    hp = Math.Max(0, hp);
 
 
     Console.WriteLine($"Your HP = {hp}");
@@ -190,5 +206,5 @@ while (true)
     Console.ReadLine();
 }
 
-// FIXA ENEMY DMG OCH ALLA CLASSES
+// LANCER GÖR MINUS SKADA???
 
