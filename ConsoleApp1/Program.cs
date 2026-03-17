@@ -43,6 +43,8 @@ Ability: Ground Slam (75 Damage)
 HP 3000
 Trait: 50% Chance to Miss Your Attack Completely
 
+Type 1, 2 or 3
+
 """);
 
 
@@ -107,6 +109,7 @@ Console.ResetColor();
 Console.ReadLine();
 
 
+Random trK = new Random(); //Knight
 Random trL = new Random(); //Lancer
 Random trLSpecial = new Random(); //LancerSpecialAbility
 Random trT = new Random(); //Titan
@@ -116,18 +119,21 @@ spearThrowDMG = 450;
 while (true)
 {
     Console.Clear();
-    Console.WriteLine("Press ENTER to Continue");
-    Console.ReadLine();
+    // Console.WriteLine("Press ENTER to Continue");
+    // Console.ReadLine();
 
+    bool trKbool = trK.NextDouble() < 0.20;
     bool trLbool = trL.NextDouble() < 0.35;
     bool trLSpeacialbool = trLSpecial.NextDouble() < 0.15;
     bool trTbool = trT.NextDouble() < 0.5;
 
-    if (name == "Lancer")
+    if (name == "Knight")
     {
+
         Console.WriteLine("Choose Your Move:");
         Console.WriteLine("1 = Attack");
         Console.WriteLine("2 = Special Ability");
+        Console.WriteLine("");
         string move = Console.ReadLine();
         while (move != "1" && move != "2")
         {
@@ -136,10 +142,50 @@ while (true)
         }
         if (move == "1")
         {
+            playerDMG = Random.Shared.Next(damageMin, damageMax);
+            Console.ForegroundColor = ConsoleColor.Green;
+            if (trKbool == true)
+            {
+                Console.WriteLine("""
+
+                Blocked Enemy Attack!
+                
+                """);
+            }
+            Console.ResetColor();
+        }
+        else if (move == "2")
+        {
+            
+        }
+    }
+    if (name == "Lancer")
+    {
+        Console.WriteLine("Choose Your Move:");
+        Console.WriteLine("1 = Attack");
+        Console.WriteLine("2 = Special Ability");
+        Console.WriteLine("");
+        string move = Console.ReadLine();
+        while (move != "1" && move != "2")
+        {
+            Console.WriteLine("""
+            Type 1 or 2
+            
+            """);
+            move = Console.ReadLine();
+        }
+        if (move == "1")
+        {
         if (trLbool == true)
             {
                 playerDMG = (int) MathF.Round(Random.Shared.Next(damageMin, damageMax) * moreDMG);
-                Console.WriteLine("Ability Active!");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("""
+
+                Damage Boost!
+
+                """);
+                Console.ResetColor();
             }
             else
             {
@@ -151,12 +197,24 @@ while (true)
         if (trLSpeacialbool == true)
             {
                 playerDMG = spearThrowDMG;
-                Console.WriteLine("Succesful Throw!");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("""
+
+                Succesful Throw!
+                
+                """);
+                Console.ResetColor();
             }
             else
             {
                 playerDMG = 0;
-                Console.WriteLine("Miss!");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("""
+
+                Miss!
+                
+                """);
+                Console.ResetColor();
             }
             
         }
@@ -166,6 +224,7 @@ while (true)
         Console.WriteLine("Choose Your Move:");
         Console.WriteLine("1 = Attack");
         Console.WriteLine("2 = Special Ability");
+        Console.WriteLine("");
         string move = Console.ReadLine();
         while (move != "1" && move != "2")
         {
@@ -178,7 +237,13 @@ while (true)
             if (trTbool == true)
         {
             playerDMG = 0;
-            Console.WriteLine("Miss!");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("""
+            
+            Miss!
+            
+            """);
+            Console.ResetColor();
         }
             else
         {
@@ -194,17 +259,31 @@ while (true)
     enemyDMG = Random.Shared.Next(EminDMG, EmaxDMG);
     enemyHP -= playerDMG;
 
+    if (name == "Knight" && trKbool == true)
+    {
+        enemyDMG = 0;
+    }
+
     hp -= enemyDMG;
     hp = Math.Max(0, hp);
+    enemyHP = Math.Max(0, enemyHP);
 
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine($"""
 
+    You did {playerDMG} Damage    
+    """);
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"""
+    Enemy did {enemyDMG} Damage
+    
+    """);
+    Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine($"Your HP = {hp}");
+    Console.ForegroundColor = ConsoleColor.Red;
     Console.WriteLine($"Enemy HP = {enemyHP}");
-    Console.WriteLine($"You did {playerDMG} Damage");
-    Console.WriteLine($"Enemy did {enemyDMG} Damage");
+    Console.ResetColor();
 
     Console.ReadLine();
 }
-
-// LANCER GÖR MINUS SKADA???
 
