@@ -7,6 +7,11 @@ int damageMax = 0;
 int damageMin = 0;
 string name = "";
 
+// Knight:
+int HealthBoost = 0;
+int healingMin = 0;
+int healingMax = 100;
+
 // Lancer:
 float moreDMG;
 int spearThrowDMG;
@@ -25,23 +30,25 @@ Choose Your Chacter:
 Thread.Sleep(500);
 
 Console.WriteLine("""
+-----------------------------------------------------------------------
 Knight (1)
-Weapon = Sword and Shield (125 - 175 Damage)
-Ability: 
-HP = 1000
+Weapon: Sword and Shield (125 - 175 Damage)
+Ability: Healing (15 - 150 HP)
+HP: 1000
 Trait: 20% Chance to Completely Block the Enemy's Attack
-
+-----------------------------------------------------------------------
 Lancer (2)
-Weapon = Spear (90 - 125 Damage)
+Weapon: Spear (90 - 125 Damage)
 Ability: Throw Spear (15% Chance to do 450 Damage)
-HP = 750
+HP: 750
 Trait: 35% Chance to do 80% More Damage
-
+-----------------------------------------------------------------------
 Titan (3)
-Weapon = Huge Sword (225 - 300 Damage)
+Weapon: Huge Sword (225 - 300 Damage)
 Ability: Ground Slam (75 Damage)
-HP 3000
+HP: 3000
 Trait: 50% Chance to Miss Your Attack Completely
+-----------------------------------------------------------------------
 
 Type 1, 2 or 3
 
@@ -129,10 +136,12 @@ while (true)
 
     if (name == "Knight")
     {
-
         Console.WriteLine("Choose Your Move:");
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("1 = Attack");
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("2 = Special Ability");
+        Console.ResetColor();
         Console.WriteLine("");
         string move = Console.ReadLine();
         while (move != "1" && move != "2")
@@ -143,27 +152,36 @@ while (true)
         if (move == "1")
         {
             playerDMG = Random.Shared.Next(damageMin, damageMax);
-            Console.ForegroundColor = ConsoleColor.Green;
-            if (trKbool == true)
-            {
-                Console.WriteLine("""
-
-                Blocked Enemy Attack!
-                
-                """);
-            }
-            Console.ResetColor();
         }
         else if (move == "2")
         {
-            
+            HealthBoost = Random.Shared.Next(healingMin, healingMax);
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"""
+            Healed {HealthBoost} HP!
+            """);
+            Console.ResetColor();
+            hp += HealthBoost;
+            playerDMG = 0;
         }
+        Console.ForegroundColor = ConsoleColor.Green;
+        if (trKbool == true)
+        {
+            Console.WriteLine("""
+
+            Blocked Enemy Attack!
+            """);
+        }
+        Console.ResetColor();
     }
     if (name == "Lancer")
     {
         Console.WriteLine("Choose Your Move:");
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("1 = Attack");
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("2 = Special Ability");
+        Console.ResetColor();
         Console.WriteLine("");
         string move = Console.ReadLine();
         while (move != "1" && move != "2")
@@ -222,8 +240,11 @@ while (true)
     if (name == "Titan")
     {
         Console.WriteLine("Choose Your Move:");
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("1 = Attack");
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("2 = Special Ability");
+        Console.ResetColor();
         Console.WriteLine("");
         string move = Console.ReadLine();
         while (move != "1" && move != "2")
@@ -278,9 +299,9 @@ while (true)
     Enemy did {enemyDMG} Damage
     
     """);
-    Console.ForegroundColor = ConsoleColor.Green;
+    Console.ForegroundColor = ConsoleColor.DarkGreen;
     Console.WriteLine($"Your HP = {hp}");
-    Console.ForegroundColor = ConsoleColor.Red;
+    Console.ForegroundColor = ConsoleColor.DarkRed;
     Console.WriteLine($"Enemy HP = {enemyHP}");
     Console.ResetColor();
 
