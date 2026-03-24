@@ -6,20 +6,28 @@ int hp = 0;
 int damageMax = 0;
 int damageMin = 0;
 string name = "";
+int kills = 0;
+int HealthBoost = 0;
 
 // Knight:
-int HealthBoost = 0;
 int healingMin = 0;
 int healingMax = 100;
 
 // Lancer:
 float moreDMG;
 int spearThrowDMG;
+int LhealingMin = 0;
+int LhealingMax = 200;
+
+// Titan:
+int TitanHeal = 100;
 
 // Enemie1:
 int enemyDMG = 0;
-int enemyHP = 1000;
-int EminDMG = 50;
+int enemyHPmin = 500;
+int enemyHPmax = 1200;
+int enemyHP = 0;
+int EminDMG = 25;
 int EmaxDMG = 150;
 
 
@@ -33,21 +41,21 @@ Console.WriteLine("""
 -----------------------------------------------------------------------
 Knight (1)
 Weapon: Sword and Shield (125 - 175 Damage)
-Ability: Healing (15 - 150 HP)
+Ability: Healing (0 - 100 HP)
 HP: 1000
 Trait: 20% Chance to Completely Block the Enemy's Attack
 -----------------------------------------------------------------------
 Lancer (2)
 Weapon: Spear (90 - 125 Damage)
-Ability: Throw Spear (15% Chance to do 450 Damage)
+Ability: Throw Spear (20% Chance to do 450 Damage + Heals Player 0 - 200 HP)
 HP: 750
 Trait: 35% Chance to do 80% More Damage
 -----------------------------------------------------------------------
 Titan (3)
 Weapon: Huge Sword (225 - 300 Damage)
-Ability: Ground Slam (75 Damage)
+Ability: Ground Slam (100 Damage + 35% Chance to Heal Player 100 HP)
 HP: 3000
-Trait: 50% Chance to Miss Your Attack Completely
+Trait: 40% Chance to Miss Your Attack Completely
 -----------------------------------------------------------------------
 
 Type 1, 2 or 3
@@ -100,18 +108,15 @@ else if (result == 3)
 
     Console.Clear();
     Console.ForegroundColor = ConsoleColor.Blue;
-    Console.WriteLine($"The {name}! You seem to want to prefer raw Power and Health rathar then Agility and Stability!");
+    Console.WriteLine($"The {name}! You seem to want to prefer raw Power and Health rather then Agility and Stability!");
     Console.ResetColor();
 }
 
 Thread.Sleep(2000);
-Console.ForegroundColor = ConsoleColor.DarkRed;
 Console.Write("""
 
-To head into the Arena, 
+To head into the Arena, Press ENTER
 """);
-Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine("Press: Enter");
 Console.ResetColor();
 Console.ReadLine();
 
@@ -120,19 +125,21 @@ Random trK = new Random(); //Knight
 Random trL = new Random(); //Lancer
 Random trLSpecial = new Random(); //LancerSpecialAbility
 Random trT = new Random(); //Titan
-moreDMG = 1.8f; //Lancer
+Random trTHeal = new Random(); //TitanHeal
 spearThrowDMG = 450;
+moreDMG = 1.8f; //Lancer
+
+enemyHP += Random.Shared.Next(enemyHPmin, enemyHPmax);
 
 while (true)
 {
     Console.Clear();
-    // Console.WriteLine("Press ENTER to Continue");
-    // Console.ReadLine();
 
-    bool trKbool = trK.NextDouble() < 0.20;
-    bool trLbool = trL.NextDouble() < 0.35;
-    bool trLSpeacialbool = trLSpecial.NextDouble() < 0.15;
-    bool trTbool = trT.NextDouble() < 0.5;
+    bool trKbool = trK.NextDouble() < 0.20; //Block Attack (Knight)
+    bool trLbool = trL.NextDouble() < 0.35; //More DMG (Lancer)
+    bool trLSpeacialbool = trLSpecial.NextDouble() < 0.2; //Throw Spear (Lancer)
+    bool trTbool = trT.NextDouble() < 0.4; //Miss Attack (Titan)
+    bool trTHealbool = trTHeal.NextDouble() < 0.35; //Heal (Titan)
 
     if (name == "Knight")
     {
@@ -215,10 +222,14 @@ while (true)
         if (trLSpeacialbool == true)
             {
                 playerDMG = spearThrowDMG;
+                HealthBoost = Random.Shared.Next(LhealingMin, LhealingMax);
+                hp += HealthBoost;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("""
+                Console.WriteLine($"""
 
                 Succesful Throw!
+                +
+                Healed {HealthBoost} HP
                 
                 """);
                 Console.ResetColor();
@@ -273,7 +284,17 @@ while (true)
         }
         if (move == "2")
         {
-            playerDMG = 75;
+            playerDMG = 100;
+            if (trTHealbool == true)
+            {
+                hp += TitanHeal;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("""
+                Healed 100 HP!
+                
+                """);
+                Console.ResetColor();
+            }
         }
     }
 
@@ -306,5 +327,49 @@ while (true)
     Console.ResetColor();
 
     Console.ReadLine();
+
+
+    if (hp == 0 && enemyHP > 0)
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        Console.WriteLine("Game Over!");
+        Thread.Sleep(1000);
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("""
+        
+        Your final score is 
+        """);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.Write($"{kills}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("""
+         Enemies killed!
+        """);
+        Console.ResetColor();
+        Thread.Sleep(1000);
+        Console.WriteLine("Press ENTER to Quit");
+        Console.ReadLine();
+        break;
+    }
+    else if (enemyHP == 0 && hp > 0)
+    {
+        Console.Clear();
+        kills ++;
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("You have defeated 1 Enemy!");
+        Thread.Sleep(1000);
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("""
+
+        A new Enemy is aproaching!
+
+        """);
+        enemyHP += Random.Shared.Next(enemyHPmin, enemyHPmax);
+        Console.ResetColor();
+        Thread.Sleep(1000);
+        Console.WriteLine("Press ENTER to continue");
+        Console.ReadLine();
+    }
 }
 
