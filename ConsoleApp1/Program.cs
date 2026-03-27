@@ -20,7 +20,7 @@ int LhealingMin = 0;
 int LhealingMax = 200;
 
 // Titan:
-int TitanHeal = 100;
+int TitanHeal = 75;
 
 // Enemie1:
 int enemyDMG = 0;
@@ -49,11 +49,11 @@ Lancer (2)
 Weapon: Spear (90 - 125 Damage)
 Ability: Throw Spear (20% Chance to do 450 Damage + Heals Player 0 - 200 HP)
 HP: 750
-Trait: 35% Chance to do 80% More Damage
+Trait: 35% Chance to do 80% More Damage 
 -----------------------------------------------------------------------
 Titan (3)
 Weapon: Huge Sword (225 - 300 Damage)
-Ability: Ground Slam (100 Damage + 35% Chance to Heal Player 100 HP)
+Ability: Ground Slam (75 Damage + 35% Chance to Heal Player 75 HP)
 HP: 3000
 Trait: 40% Chance to Miss Your Attack Completely
 -----------------------------------------------------------------------
@@ -113,7 +113,7 @@ else if (result == 3)
 }
 
 Thread.Sleep(2000);
-Console.Write("""
+Console.WriteLine("""
 
 To head into the Arena, Press ENTER
 """);
@@ -165,6 +165,7 @@ while (true)
             HealthBoost = Random.Shared.Next(healingMin, healingMax);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"""
+
             Healed {HealthBoost} HP!
             """);
             Console.ResetColor();
@@ -208,7 +209,6 @@ while (true)
                 Console.WriteLine("""
 
                 Damage Boost!
-
                 """);
                 Console.ResetColor();
             }
@@ -230,7 +230,6 @@ while (true)
                 Succesful Throw!
                 +
                 Healed {HealthBoost} HP
-                
                 """);
                 Console.ResetColor();
             }
@@ -241,7 +240,6 @@ while (true)
                 Console.WriteLine("""
 
                 Miss!
-                
                 """);
                 Console.ResetColor();
             }
@@ -273,7 +271,6 @@ while (true)
             Console.WriteLine("""
             
             Miss!
-            
             """);
             Console.ResetColor();
         }
@@ -284,14 +281,14 @@ while (true)
         }
         if (move == "2")
         {
-            playerDMG = 100;
+            playerDMG = 75;
             if (trTHealbool == true)
             {
                 hp += TitanHeal;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("""
-                Healed 100 HP!
-                
+                Console.WriteLine($"""
+
+                Healed {TitanHeal} HP!
                 """);
                 Console.ResetColor();
             }
@@ -345,6 +342,7 @@ while (true)
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("""
          Enemies killed!
+        
         """);
         Console.ResetColor();
         Thread.Sleep(1000);
@@ -370,6 +368,31 @@ while (true)
         Thread.Sleep(1000);
         Console.WriteLine("Press ENTER to continue");
         Console.ReadLine();
+    }
+    else if (hp == 0 && enemyHP == 0)
+    {
+        kills ++;
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+        Console.WriteLine("Both contestants have died, Game Over!");
+        Thread.Sleep(1000);
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("""
+        
+        Your final score is 
+        """);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.Write($"{kills}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("""
+         Enemies killed!
+        
+        """);
+        Console.ResetColor();
+        Thread.Sleep(1000);
+        Console.WriteLine("Press ENTER to Quit");
+        Console.ReadLine();
+        break;        
     }
 }
 
