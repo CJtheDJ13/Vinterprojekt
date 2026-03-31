@@ -7,7 +7,7 @@ int damageMax = 0;
 int damageMin = 0;
 string name = "";
 int kills = 0;
-int HealthBoost = 0;
+int HealthBoost;
 
 // Knight:
 int healingMin = 0;
@@ -23,20 +23,20 @@ int LhealingMax = 200;
 int TitanHeal = 75;
 
 // Enemie1:
-int enemyDMG = 0;
+int enemyDMG;
 int enemyHPmin = 500;
 int enemyHPmax = 1200;
 int enemyHP = 0;
 int EminDMG = 25;
 int EmaxDMG = 150;
 
-
+Console.ForegroundColor = ConsoleColor.Blue;
 Console.WriteLine("""
 Choose Your Chacter:
 
 """);
+Console.ResetColor();
 Thread.Sleep(500);
-
 Console.WriteLine("""
 -----------------------------------------------------------------------
 Knight (1)
@@ -58,9 +58,13 @@ HP: 3000
 Trait: 40% Chance to Miss Your Attack Completely
 -----------------------------------------------------------------------
 
+""");
+Console.ForegroundColor = ConsoleColor.Blue;
+Console.WriteLine("""
 Type 1, 2 or 3
 
 """);
+Console.ResetColor();
 
 
 string answer = Console.ReadLine();
@@ -322,9 +326,11 @@ while (true)
     Console.ForegroundColor = ConsoleColor.DarkRed;
     Console.WriteLine($"Enemy HP = {enemyHP}");
     Console.ResetColor();
+    Console.WriteLine("""
 
+    Press ENTER to continue
+    """);
     Console.ReadLine();
-
 
     if (hp == 0 && enemyHP > 0)
     {
