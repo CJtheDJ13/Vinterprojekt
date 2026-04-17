@@ -1,6 +1,4 @@
-﻿// Psuedokod:
-
-// Player Stats:
+﻿// Player Stats:
 int playerDMG = 0;
 int hp = 0;
 int damageMax = 0;
@@ -11,13 +9,13 @@ int HealthBoost;
 
 // Knight:
 int healingMin = 0;
-int healingMax = 100;
+int healingMax = 125;
 
 // Lancer:
 float moreDMG;
 int spearThrowDMG;
 int LhealingMin = 0;
-int LhealingMax = 200;
+int LhealingMax = 225;
 
 // Titan:
 int TitanHeal = 75;
@@ -41,13 +39,13 @@ Console.WriteLine("""
 -----------------------------------------------------------------------
 Knight (1)
 Weapon: Sword and Shield (125 - 175 Damage)
-Ability: Healing (0 - 100 HP)
+Ability: Healing (0 - 125 HP)
 HP: 1000
 Trait: 20% Chance to Completely Block the Enemy's Attack
 -----------------------------------------------------------------------
 Lancer (2)
 Weapon: Spear (90 - 125 Damage)
-Ability: Throw Spear (20% Chance to do 450 Damage + Heals Player 0 - 200 HP)
+Ability: Throw Spear (25% Chance to do 450 Damage + Heals Player 0 - 225 HP)
 HP: 750
 Trait: 35% Chance to do 80% More Damage 
 -----------------------------------------------------------------------
@@ -141,7 +139,7 @@ while (true)
 
     bool trKbool = trK.NextDouble() < 0.20; //Block Attack (Knight)
     bool trLbool = trL.NextDouble() < 0.35; //More DMG (Lancer)
-    bool trLSpeacialbool = trLSpecial.NextDouble() < 0.2; //Throw Spear (Lancer)
+    bool trLSpeacialbool = trLSpecial.NextDouble() < 0.25; //Throw Spear (Lancer)
     bool trTbool = trT.NextDouble() < 0.4; //Miss Attack (Titan)
     bool trTHealbool = trTHeal.NextDouble() < 0.35; //Heal (Titan)
 
