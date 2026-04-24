@@ -1,4 +1,7 @@
-﻿// Player Stats:
+﻿static void VinterProjekt()
+{
+
+// Player Stats:
 int playerDMG = 0;
 int hp = 0;
 int damageMax = 0;
@@ -20,10 +23,9 @@ int LhealingMax = 225;
 // Titan:
 int TitanHeal = 75;
 
-// Enemie1:
+// Enemy:
 int enemyDMG;
-int enemyHPmin = 500;
-int enemyHPmax = 1200;
+List<int> enemyHPlist = [500, 600, 700, 800, 900, 1000, 1100, 1200];
 int enemyHP = 0;
 int EminDMG = 25;
 int EmaxDMG = 150;
@@ -131,7 +133,7 @@ Random trTHeal = new Random(); //TitanHeal
 spearThrowDMG = 450;
 moreDMG = 1.8f; //Lancer
 
-enemyHP += Random.Shared.Next(enemyHPmin, enemyHPmax);
+enemyHP += enemyHPlist[Random.Shared.Next(enemyHPlist.Count)];
 
 while (true)
 {
@@ -367,7 +369,7 @@ while (true)
         A new Enemy is aproaching!
 
         """);
-        enemyHP += Random.Shared.Next(enemyHPmin, enemyHPmax);
+        enemyHP += enemyHPlist[Random.Shared.Next(enemyHPlist.Count)];
         Console.ResetColor();
         Thread.Sleep(1000);
         Console.WriteLine("Press ENTER to continue");
@@ -399,4 +401,8 @@ while (true)
         break;        
     }
 }
+}
+
+VinterProjekt();
+
 
